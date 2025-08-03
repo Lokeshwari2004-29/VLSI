@@ -1,0 +1,32 @@
+module tb_nand_gate;
+
+  // Signals
+  reg a;
+  reg b;
+  wire y;
+
+  // Instantiate the NAND gate
+  nand_gate uut (
+    .a(a),
+    .b(b),
+    .y(y)
+  );
+
+  initial begin
+    // Create VCD file for waveform viewing
+    $dumpfile("nand_gate.vcd");    // VCD output file
+    $dumpvars(0, tb_nand_gate);    // Dump all signals in this module
+
+    // Monitor output
+    $monitor("Time = %0t : a = %b, b = %b, y = %b", $time, a, b, y);
+
+    // Apply input combinations
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+
+endmodule
