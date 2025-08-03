@@ -1,0 +1,37 @@
+timescale 1ns / 1ps
+
+module tb_half_subtractor;
+
+  // Testbench signals
+  reg a;
+  reg b;
+  wire diff;
+  wire borrow;
+
+  // Instantiate half subtractor
+  half_subtractor uut (
+    .a(a),
+    .b(b),
+    .diff(diff),
+    .borrow(borrow)
+  );
+
+  initial begin
+    // Dump waveform
+    $dumpfile("half_subtractor.vcd");
+    $dumpvars(0, tb_half_subtractor);
+
+    // Monitor values
+    $monitor("Time = %0t : a = %b, b = %b, diff = %b, borrow = %b",
+             $time, a, b, diff, borrow);
+
+    // Apply test inputs
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+
+endmodule
