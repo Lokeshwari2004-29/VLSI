@@ -1,0 +1,40 @@
+timescale 1ns / 1ps
+
+module tb_mux_4to1;
+
+  // Testbench signals
+  reg i0, i1, i2, i3;
+  reg [1:0] sel;
+  wire y;
+
+  // Instantiate the 4:1 multiplexer
+  mux_4to1 uut (
+    .i0(i0),
+    .i1(i1),
+    .i2(i2),
+    .i3(i3),
+    .sel(sel),
+    .y(y)
+  );
+
+  initial begin
+    // Setup waveform dump
+    $dumpfile("mux_4to1.vcd");
+    $dumpvars(0, tb_mux_4to1);
+
+    // Monitor signals
+    $monitor("Time = %0t : sel = %b -> y = %b", $time, sel, y);
+
+    // Set input values
+    i0 = 0; i1 = 1; i2 = 0; i3 = 1;
+
+    // Apply test cases
+    sel = 2'b00; #10;  // Expect y = i0 = 0
+    sel = 2'b01; #10;  // Expect y = i1 = 1
+    sel = 2'b10; #10;  // Expect y = i2 = 0
+    sel = 2'b11; #10;  // Expect y = i3 = 1
+
+    $finish;
+  end
+
+endmodule
