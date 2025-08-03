@@ -1,0 +1,34 @@
+timescale 1ns / 1ps
+
+module tb_or_gate;
+
+  // Testbench signals
+  reg a;
+  reg b;
+  wire y;
+
+  // Instantiate the OR gate
+  or_gate uut (
+    .a(a),
+    .b(b),
+    .y(y)
+  );
+
+  initial begin
+    // Create VCD dumpfile for waveform viewing
+    $dumpfile("or_gate.vcd");    // Name of the VCD file
+    $dumpvars(0, tb_or_gate);    // Dump all variables in tb_or_gate
+
+    // Monitor signal changes
+    $monitor("Time = %0t : a = %b, b = %b, y = %b", $time, a, b, y);
+
+    // Apply test vectors
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+  end
+
+endmodule
